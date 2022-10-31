@@ -1,5 +1,6 @@
 package eu.tutorials.sevenminuteworkaut
 
+import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -26,8 +27,8 @@ class ExerciseActivity : AppCompatActivity(), OnInitListener {
     private var exerciseProgress = 0
     private var exerciseList : ArrayList<ExerciseModel>? = null
     private var currentExercisePosition = -1
-    private val exerciseTime:Long = 1000
-    private val restTime:Long = 1000
+    private val exerciseTime:Long = 500
+    private val restTime:Long = 500
     private var tts: TextToSpeech? = null
     private var binding:ActivityExerciseBinding? = null
     private var player: MediaPlayer? = null
@@ -124,13 +125,15 @@ class ExerciseActivity : AppCompatActivity(), OnInitListener {
             }
 
             override fun onFinish() {
-                exerciseList!![currentExercisePosition].setIsSelected(false)
-                exerciseList!![currentExercisePosition].setIsCompleted(true)
-                exerciseAdapter!!.notifyDataSetChanged()
                 if (currentExercisePosition < exerciseList?.size!! -1){
+                    exerciseList!![currentExercisePosition].setIsSelected(false)
+                    exerciseList!![currentExercisePosition].setIsCompleted(true)
+                    exerciseAdapter!!.notifyDataSetChanged()
                     setupRestView()
                 } else {
-                    Toast.makeText(this@ExerciseActivity, "Koniec",Toast.LENGTH_SHORT).show()
+                    finish()
+                    val intent = Intent(this@ExerciseActivity, FinishActivity::class.java)
+                    startActivity(intent)
                 }
             }
         }.start()
