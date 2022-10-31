@@ -26,8 +26,8 @@ class ExerciseActivity : AppCompatActivity(), OnInitListener {
     private var exerciseProgress = 0
     private var exerciseList : ArrayList<ExerciseModel>? = null
     private var currentExercisePosition = -1
-    private val exerciseTime:Long = 3000
-    private val restTime:Long = 5000
+    private val exerciseTime:Long = 1000
+    private val restTime:Long = 1000
     private var tts: TextToSpeech? = null
     private var binding:ActivityExerciseBinding? = null
     private var player: MediaPlayer? = null
@@ -124,6 +124,9 @@ class ExerciseActivity : AppCompatActivity(), OnInitListener {
             }
 
             override fun onFinish() {
+                exerciseList!![currentExercisePosition].setIsSelected(false)
+                exerciseList!![currentExercisePosition].setIsCompleted(true)
+                exerciseAdapter!!.notifyDataSetChanged()
                 if (currentExercisePosition < exerciseList?.size!! -1){
                     setupRestView()
                 } else {
@@ -146,6 +149,8 @@ class ExerciseActivity : AppCompatActivity(), OnInitListener {
 
             override fun onFinish() {
                 currentExercisePosition++
+                exerciseList!![currentExercisePosition].setIsSelected(true)
+                exerciseAdapter!!.notifyDataSetChanged()
                 setupExerciseView()
             }
         }.start()
