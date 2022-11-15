@@ -1,5 +1,6 @@
 package eu.tutorials.sevenminuteworkaut
 
+import android.app.Dialog
 import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
@@ -13,6 +14,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import eu.tutorials.sevenminuteworkaut.databinding.ActivityExerciseBinding
+import eu.tutorials.sevenminuteworkaut.databinding.DialogCustomBackConfirmationBinding
 import org.w3c.dom.Text
 import java.util.*
 import java.util.Locale.UNICODE_LOCALE_EXTENSION
@@ -27,8 +29,8 @@ class ExerciseActivity : AppCompatActivity(), OnInitListener {
     private var exerciseProgress = 0
     private var exerciseList : ArrayList<ExerciseModel>? = null
     private var currentExercisePosition = -1
-    private val exerciseTime:Long = 500
-    private val restTime:Long = 500
+    private val exerciseTime:Long = 5000
+    private val restTime:Long = 2000
     private var tts: TextToSpeech? = null
     private var binding:ActivityExerciseBinding? = null
     private var player: MediaPlayer? = null
@@ -50,10 +52,30 @@ class ExerciseActivity : AppCompatActivity(), OnInitListener {
 
 
         binding?.toolbarExercise?.setNavigationOnClickListener {
-            onBackPressed()
+            customDialogForBackButton()
         }
         setupRestView()
         setupExerciseStatusRecyclerView()
+    }
+
+    override fun onBackPressed() {
+        customDialogForBackButton()
+        //super.onBackPressed()
+    }
+
+    private fun customDialogForBackButton() {
+        val customDialog = Dialog(this)
+        val dialogBinding  = DialogCustomBackConfirmationBinding.inflate(layoutInflater)
+        customDialog.setContentView(dialogBinding.root)
+        customDialog.setCanceledOnTouchOutside(false)
+        dialogBinding.btnYes.setOnClickListener{
+            this@ExerciseActivity.finish()
+            customDialog.dismiss()
+        }
+        dialogBinding.btnNo.setOnClickListener {
+            customDialog.dismiss()
+        }
+        customDialog.show()
     }
 
     private fun setupExerciseStatusRecyclerView(){

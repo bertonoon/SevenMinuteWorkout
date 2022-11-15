@@ -3,4 +3,5 @@
     <string name="start">START</string>
     <string name="start_image">Start image</string>
     <string name="get_ready_for">GET READY FOR</string>
+    <string name="txtDialogBack">This will stop your workout. You\'ve come this far, are you sure you want to quit?</string>
 </resources>
